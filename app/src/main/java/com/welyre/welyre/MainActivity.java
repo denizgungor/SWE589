@@ -15,13 +15,18 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
     private MainDataAdapter dataAdapter;
     private RecyclerView numberOfItems;
-    private static final String DEGREE = "\u00b0";
-    private static final int FORECAST_LIST_ITEMS = 12;
-    private static final String[] FORECASTS = {
-            "Mon, Oct 9: 15"+DEGREE, "Tue, Oct 10: 17"+DEGREE, "Wed, Oct 11: 17"+DEGREE,
-            "Thu, Oct 12: 19"+DEGREE, "Fri, Oct 13: 19"+DEGREE, "Sat, Oct 14: 18"+DEGREE,
-            "Sun, Oct 15: 19"+DEGREE, "Mon, Oct 16: 22"+DEGREE, "Tue, Oct 17: 18"+DEGREE,
-            "Wed, Oct 18: 21"+DEGREE, "Thu, Oct 19: 12"+DEGREE, "Fri, Oct 20: 22"+DEGREE};
+    private static final int RESULT_LIST_ITEMS = 9;
+    private static final String[] RESULTS = {
+            "Artist: Eva Cassidy, Song: Bridge Over troubled water",
+            "Artist: Lee Lessack, Song: The look of love",
+            "Artist: Marianna Leporace, Song: Bizarre love triangle",
+            "Artist: Roberto Gambarini, Song: Smoke gets in your eyes",
+            "Artist: Marcela, Song: Loving you",
+            "Artist: Kimber Manning, Song: What a wonderful world",
+            "Artist: Lona knopfler, Song: Alfie",
+            "Artist: Emi Fujita , Song: The rose",
+            "Artist: Stacey Kent, Song: You've got a friend",
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         numberOfItems.setLayoutManager(layoutManager);
         numberOfItems.setHasFixedSize(true);
-        dataAdapter = new MainDataAdapter(FORECAST_LIST_ITEMS, FORECASTS );
+        dataAdapter = new MainDataAdapter(RESULT_LIST_ITEMS, RESULTS );
         numberOfItems.setAdapter(dataAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
