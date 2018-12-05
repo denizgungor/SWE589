@@ -10,6 +10,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String DEGREE = "\u00b0";
+    private static final int FORECAST_LIST_ITEMS = 12;
+    private static final String[] FORECASTS = {
+            "Mon, Oct 9: 15"+DEGREE, "Tue, Oct 10: 17"+DEGREE, "Wed, Oct 11: 17"+DEGREE,
+            "Thu, Oct 12: 19"+DEGREE, "Fri, Oct 13: 19"+DEGREE, "Sat, Oct 14: 18"+DEGREE,
+            "Sun, Oct 15: 19"+DEGREE, "Mon, Oct 16: 22"+DEGREE, "Tue, Oct 17: 18"+DEGREE,
+            "Wed, Oct 18: 21"+DEGREE, "Thu, Oct 19: 12"+DEGREE, "Fri, Oct 20: 22"+DEGREE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
