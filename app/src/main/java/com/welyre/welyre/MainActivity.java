@@ -1,5 +1,8 @@
 package com.welyre.welyre;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -7,9 +10,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
+import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -39,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         numberOfItems.setLayoutManager(layoutManager);
         numberOfItems.setHasFixedSize(true);
-        dataAdapter = new MainDataAdapter(RESULT_LIST_ITEMS, RESULTS );
-        numberOfItems.setAdapter(dataAdapter);
+        dataAdapter = new MainDataAdapter(); /* = new MainDataAdapter(RESULT_LIST_ITEMS, RESULTS );;*/
 
+        numberOfItems.setAdapter(dataAdapter);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,8 +63,47 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+        /*SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) findViewById(R.id.searchText);
+
+        if (null != searchView) {
+            searchView.setSearchableInfo(searchManager
+                    .getSearchableInfo(getComponentName()));
+            searchView.setIconifiedByDefault(false);
+        }
+
+        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+            public boolean onQueryTextChange(String newText) {
+                // this is your adapter that will be filtered
+                return true;
+            }
+
+            public boolean onQueryTextSubmit(String query) {
+                //Here u can get the value "query" which is entered in the search box.//
+                query = getText();
+            }
+            };
+        searchView.setOnQueryTextListener(queryTextListener);
+    */
     }
 
+
+    private void searchFunction(MainDataAdapter dataAdapter, String query){
+        String queryTerm=query;
+        String musicAPIKey = "29f9c6101570daf924bdf81055f9ba64";
+        String musicURL = "https://api.musixmatch.com/ws/1.1/" +
+                "track.search?" +
+                "q_artist=" +queryTerm+
+                "&page_size=10" +
+                "&page=1" +
+                "&s_track_rating=desc" +
+                "&apikey=" + musicAPIKey;
+
+        FetchMusicTask musicTask = new FetchMusicTask(dataAdapter);
+        musicTask.execute(musicURL);
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -65,10 +117,10 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
+        Context context = getApplicationContext();
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
