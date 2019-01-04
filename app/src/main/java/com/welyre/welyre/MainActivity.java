@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     private void searchFunction(MainDataAdapter dataAdapter, String query){
         String queryTerm=query;
         String musicAPIKey = "29f9c6101570daf924bdf81055f9ba64";
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 "&s_track_rating=desc" +
                 "&apikey=" + musicAPIKey;
 
-        FetchMusicTask musicTask = new FetchMusicTask(dataAdapter);
+        FetchMusicTask musicTask = new FetchMusicTask(dataAdapter, getApplicationContext(), queryTerm);
         musicTask.execute(musicURL);
     }
     @Override

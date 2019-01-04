@@ -1,8 +1,15 @@
 package com.welyre.welyre;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.JsonReader;
 import android.util.Log;
+
+import com.welyre.welyre.data.LyricsContract;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +23,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class FetchMusicTask extends AsyncTask<String, Void, String[]> {
+    Context mContext;
+    ContentResolver mResolver;
+
     @Override
     protected String[] doInBackground (String... urlStrings) {
         Log.v("setdata","doinbackground");
@@ -67,11 +77,27 @@ public class FetchMusicTask extends AsyncTask<String, Void, String[]> {
     }
 
     MainDataAdapter dataAdapter;
-    public FetchMusicTask(MainDataAdapter musicAdapter){
+    String queryString;
+    public FetchMusicTask(MainDataAdapter musicAdapter, Context context,String query){
         dataAdapter = musicAdapter;
+        mContext = context;
+        mResolver = mContext.getContentResolver();
+        queryString = query;
+    }
+
+    public long addSearchHistory(String searchquery){
+        long searchId;
+        Uri insertedUri;
+        ContentValues searchValues = new ContentValues();
+        searchValues.put(LyricsContract.SearchEntry.KEYWORD, searchquery);
+        insertedUri = mResolver.insert(LyricsContract.SearchEntry.CONTENT_URI, searchValues);
+        searchId = ContentUris.parseId(insertedUri);
+        return searchId;
     }
 
     private String[] getMusicDataFromJson(String musicJsonStr) throws JSONException {
+        Log.v("CENGO",queryString);
+
         final String message = "message";
         final String body = "body";
         final String track_list = "track_list";
@@ -115,23 +141,3 @@ public class FetchMusicTask extends AsyncTask<String, Void, String[]> {
     }
 }
 
-
-/*
-
-  URL musicURL = new URL(urlStrings[0]);
-            urlConnection = (HttpURLConnection) musicURL.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.connect();
-            InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
-            if (inputStream != null) {
-                reader = new BufferedReader(new InputStreamReader(inputStream));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line + "\n");
-                }
-                if (buffer.length() != 0) {
-                    musicJsonStr = buffer.toString();
-                }
-            }
- */

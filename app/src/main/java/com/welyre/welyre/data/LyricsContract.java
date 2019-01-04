@@ -9,7 +9,7 @@ public class LyricsContract {
 
     public static final String CONTENT_AUTHORITY = "com.welyre.welyre";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
-    public static final String PATH_WEATHER = "first";
+    public static final String PATH_SEARCH = "search";
     public static final String PATH_LOCATION = "second";
 
     public static final class ArtistEntry implements BaseColumns {
@@ -86,6 +86,54 @@ public class LyricsContract {
         public static Uri buildLocationUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
+
+    }
+
+
+    public static final class SearchEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon() .appendPath(PATH_LOCATION)
+                .build();
+        public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
+                + "/" + CONTENT_AUTHORITY + "/" + PATH_SEARCH;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
+                + "/" + CONTENT_AUTHORITY + "/" + PATH_SEARCH;
+
+        public static final String TABLE_NAME = "search";
+        public static final String SEARCH_ID = "search_id";
+        public static final String KEYWORD = "keyword";
+        public static final String SEARCH_DATE = "search_date";
+
+
+        public static Uri buildSearchUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static Uri buildSearchUriWithKeyword(String keyword, long date) {
+            return CONTENT_URI.buildUpon()
+                    .appendPath(keyword)
+                    .appendPath(Long.toString(date))
+                    .build();
+        }
+
+
+
+        public static String getSearchHistoryFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+        // Based on our URI definitions, the second path of the URI will be the "Date" information. // Therefore, we are getting the second path segment to get the date information
+        public static long getDateOfSearch(Uri uri) {
+            return Long.parseLong(uri.getPathSegments().get(2));
+        }
+
+        public static long getStartDateFromUri(Uri uri) {
+            String dateString = uri.getQueryParameter(SEARCH_DATE);
+            if (null != dateString && dateString.length() > 0)
+                return Long.parseLong(dateString);
+            else
+                return 0;
+        }
+
 
     }
 
