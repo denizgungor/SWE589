@@ -63,30 +63,27 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        searchFunction(dataAdapter,"rihanna");
 
+        SearchView searchView=(SearchView) findViewById(R.id.searchText);
+        searchView.setQueryHint("Search View");
 
-        /*SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) findViewById(R.id.searchText);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-        if (null != searchView) {
-            searchView.setSearchableInfo(searchManager
-                    .getSearchableInfo(getComponentName()));
-            searchView.setIconifiedByDefault(false);
-        }
-
-        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
-            public boolean onQueryTextChange(String newText) {
-                // this is your adapter that will be filtered
-                return true;
-            }
-
+            @Override
             public boolean onQueryTextSubmit(String query) {
-                //Here u can get the value "query" which is entered in the search box.//
-                query = getText();
+                searchFunction(dataAdapter,query);
+                return false;
             }
-            };
-        searchView.setOnQueryTextListener(queryTextListener);
-    */
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                /*searchFunction(dataAdapter,newText);*/
+                return false;
+            }
+        });
+
+
     }
 
 
@@ -96,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         String musicURL = "https://api.musixmatch.com/ws/1.1/" +
                 "track.search?" +
                 "q_artist=" +queryTerm+
-                "&page_size=10" +
+                "&page_size=20" +
                 "&page=1" +
                 "&s_track_rating=desc" +
                 "&apikey=" + musicAPIKey;

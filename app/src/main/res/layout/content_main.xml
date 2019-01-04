@@ -19,14 +19,14 @@
         android:layout_alignParentTop="true"
 
         />
-    <android.support.v7.widget.SearchView
+    <android.widget.SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/searchText"
         android:layout_below="@id/welcomeText"
       >
 
-    </android.support.v7.widget.SearchView>
+    </android.widget.SearchView>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width = "match_parent"

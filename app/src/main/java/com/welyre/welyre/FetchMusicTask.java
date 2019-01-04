@@ -18,6 +18,7 @@ import java.net.URL;
 public class FetchMusicTask extends AsyncTask<String, Void, String[]> {
     @Override
     protected String[] doInBackground (String... urlStrings) {
+        Log.v("setdata","doinbackground");
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -98,6 +99,8 @@ public class FetchMusicTask extends AsyncTask<String, Void, String[]> {
             resultStrs[i] = tracknamestring +" by " + trackartiststring +" - " + trackalbumstring;
 
         }
+        Log.v("setdata","0");
+
         return resultStrs;
     }
 
@@ -108,7 +111,7 @@ public class FetchMusicTask extends AsyncTask<String, Void, String[]> {
             Log.v("FetchMusicTask", musicData[i]);
         }
         dataAdapter.setMusicData(musicData);
-        Log.v("data","1");
+        Log.v("setdata","1");
     }
 }
 
