@@ -42,6 +42,12 @@
             android:authorities="com.welyre.welyre"
             android:enabled="true"
             android:exported="true"></provider>
+
+        <service
+            android:name=".sync.ReminderIntentService"
+            android:exported="false">
+        </service>
+
     </application>
 
 </manifest>

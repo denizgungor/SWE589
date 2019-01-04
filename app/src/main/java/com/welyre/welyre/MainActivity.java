@@ -1,28 +1,21 @@
 package com.welyre.welyre;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
-import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.welyre.welyre.sync.ReminderIntentService;
+import com.welyre.welyre.sync.ReminderTasks;
+import com.welyre.welyre.utilities.NotificationUtils;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -53,17 +46,20 @@ public class MainActivity extends AppCompatActivity {
         numberOfItems.setLayoutManager(layoutManager);
         numberOfItems.setHasFixedSize(true);
         dataAdapter = new MainDataAdapter(); /* = new MainDataAdapter(RESULT_LIST_ITEMS, RESULTS );;*/
-
+        incrementDays(Context);
         numberOfItems.setAdapter(dataAdapter);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+
+                NotificationUtils.remindUserBecauseCharging(this);
+
             }
         });
-        searchFunction(dataAdapter,"rihanna");
+       /* searchFunction(dataAdapter,"rihanna");*/
 
         SearchView searchView=(SearchView) findViewById(R.id.searchText);
         searchView.setQueryHint("Search View");
@@ -85,7 +81,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    public void incrementDays(View view) {
 
+        Intent incrementDayCountIntent = new Intent(this, ReminderIntentService.class);
+        incrementDayCountIntent.setAction(ReminderTasks.ACTION_INCREMENT_DAYSAWAY_COUNT);
+        startService(incrementDayCountIntent);
+    }
 
 
     private void searchFunction(MainDataAdapter dataAdapter, String query){
